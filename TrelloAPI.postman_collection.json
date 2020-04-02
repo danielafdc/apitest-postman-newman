@@ -1,0 +1,357 @@
+{
+	"info": {
+		"_postman_id": "e768b6a7-1b18-46ce-b86a-a86c165055b0",
+		"name": "Trello API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Validando",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/560bf4298b3dda300c18d09c?fields=name,url&key=13dcb1729385b55cc84132af3859d472&token=eaa8938468b29f5393ce8be1cb146fb748188be7929193af8d042526cf502b60",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						"560bf4298b3dda300c18d09c"
+					],
+					"query": [
+						{
+							"key": "fields",
+							"value": "name,url"
+						},
+						{
+							"key": "key",
+							"value": "13dcb1729385b55cc84132af3859d472"
+						},
+						{
+							"key": "token",
+							"value": "eaa8938468b29f5393ce8be1cb146fb748188be7929193af8d042526cf502b60"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criar Board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e35205de-03ac-4187-8be3-38eb56c4937e",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Request status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Contrato retornado com sucesso\", function () {",
+							"    pm.expect(jsonData.name).to.eql(\"Automação - Guilherme 2\");",
+							"});",
+							"",
+							"pm.environment.set(\"boardId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/1/boards/?name=Automação - Guilherme 2&defaultLabels=true&defaultLists=true&keepFromSource=none&prefs_permissionLevel=private&prefs_voting=disabled&prefs_comments=members&prefs_invitations=members&prefs_selfJoin=true&prefs_cardCovers=true&prefs_background=blue&prefs_cardAging=regular&key={{key}}&token={{token}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"1",
+						"boards",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Automação - Guilherme 2"
+						},
+						{
+							"key": "defaultLabels",
+							"value": "true"
+						},
+						{
+							"key": "defaultLists",
+							"value": "true"
+						},
+						{
+							"key": "keepFromSource",
+							"value": "none"
+						},
+						{
+							"key": "prefs_permissionLevel",
+							"value": "private"
+						},
+						{
+							"key": "prefs_voting",
+							"value": "disabled"
+						},
+						{
+							"key": "prefs_comments",
+							"value": "members"
+						},
+						{
+							"key": "prefs_invitations",
+							"value": "members"
+						},
+						{
+							"key": "prefs_selfJoin",
+							"value": "true"
+						},
+						{
+							"key": "prefs_cardCovers",
+							"value": "true"
+						},
+						{
+							"key": "prefs_background",
+							"value": "blue"
+						},
+						{
+							"key": "prefs_cardAging",
+							"value": "regular"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Lists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a75874d8-f007-42e9-91eb-ac3585e10159",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Codigo de status correto\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Contrato retornado com sucesso\", function () {",
+							"    pm.expect(jsonData.name).to.eql(\"backlog\");",
+							"});",
+							"",
+							"pm.environment.set(\"listsId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/1/lists?name=backlog&idBoard={{boardId}}&key={{key}}&token={{token}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"1",
+						"lists"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "backlog"
+						},
+						{
+							"key": "idBoard",
+							"value": "{{boardId}}"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Lists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "df12786b-412f-4e1b-ac4c-4e608adca5b8",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Codigo de status correto\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Contrato retornado com sucesso\", function () {",
+							"    pm.expect(jsonData.name).to.eql(\"backlog\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/1/lists/{{listsId}}?fields=name,closed,idBoard,pos&key={{key}}&token={{token}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"1",
+						"lists",
+						"{{listsId}}"
+					],
+					"query": [
+						{
+							"key": "fields",
+							"value": "name,closed,idBoard,pos"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Cards",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a75874d8-f007-42e9-91eb-ac3585e10159",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Codigo de status correto\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Contrato retornado com sucesso\", function () {",
+							"    pm.expect(jsonData.name).to.eql(\"newman apresentacao 2\");",
+							"});",
+							"",
+							"pm.environment.set(\"cardId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/1/cards?name=newman apresentacao 2&idList={{listsId}}&key={{key}}&token={{token}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"1",
+						"cards"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "newman apresentacao 2"
+						},
+						{
+							"key": "idList",
+							"value": "{{listsId}}"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deletar Board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8012ed74-70a0-4028-9fa8-46142cd2313f",
+						"exec": [
+							"pm.test(\"Request Status\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/1/boards/{{boardId}}?key={{key}}&token={{token}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"1",
+						"boards",
+						"{{boardId}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
